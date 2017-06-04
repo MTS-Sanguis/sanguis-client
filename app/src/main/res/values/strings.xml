@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">sanguis-client</string>
+    <string name="debug">[ДЕБАГ]</string>
+    <string name="debug_name">Иванов Иван Иванович</string>
+    <string name="debug_info">[Какая-либо дополнительная важная информация]</string>
+    <string name="debug_foto">[ЗДЕСЬ ДОЛЖНА БЫТЬ ФОТОГРАФИЯ]</string>
+</resources>
