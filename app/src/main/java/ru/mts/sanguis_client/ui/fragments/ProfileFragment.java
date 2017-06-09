@@ -1,5 +1,6 @@
 package ru.mts.sanguis_client.ui.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +11,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.mvp.views.ProfileView;
 import ru.mts.sanguis_client.ui.adapters.InfoListAdapter;
 
-public class ProfileFragment extends MvpAppCompatFragment {
+import java.util.HashMap;
+
+public class ProfileFragment extends MvpAppCompatFragment implements ProfileView {
 
     @BindView(R.id.fragment_profile_info_list) RecyclerView rvInfoList;
+
+    private InfoListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstance){
@@ -28,7 +34,23 @@ public class ProfileFragment extends MvpAppCompatFragment {
         ButterKnife.bind(this, view);
 
         rvInfoList.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvInfoList.setAdapter(new InfoListAdapter());
+        this.adapter = new InfoListAdapter();
+        rvInfoList.setAdapter(this.adapter);
     }
 
+
+    @Override
+    public void setProfileFoto(Drawable drawable) {
+        //пкачто нету элемента фотгшрафии, я это дополню
+    }
+
+    @Override
+    public void setProfileName(String name) {
+
+    }
+
+    @Override
+    public void setProfileFields(HashMap<String, String> fields) {
+
+    }
 }
