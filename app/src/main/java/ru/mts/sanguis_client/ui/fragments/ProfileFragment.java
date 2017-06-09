@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.mvp.presenters.ProfilePresenter;
 import ru.mts.sanguis_client.mvp.views.ProfileView;
 import ru.mts.sanguis_client.ui.adapters.InfoListAdapter;
 
@@ -19,6 +22,9 @@ import java.util.HashMap;
 public class ProfileFragment extends MvpAppCompatFragment implements ProfileView {
 
     @BindView(R.id.fragment_profile_info_list) RecyclerView rvInfoList;
+
+    @InjectPresenter(type = PresenterType.GLOBAL, tag = "ProfilePresenter")
+    ProfilePresenter presenter;
 
     private InfoListAdapter adapter;
 

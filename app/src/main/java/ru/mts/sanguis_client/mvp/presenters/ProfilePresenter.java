@@ -1,10 +1,12 @@
 package ru.mts.sanguis_client.mvp.presenters;
 
 import android.util.Log;
+import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import ru.mts.sanguis_client.common.Utils;
 import ru.mts.sanguis_client.mvp.views.ProfileView;
 
+@InjectViewState
 public class ProfilePresenter extends MvpPresenter<ProfileView> {
 
     @Override
