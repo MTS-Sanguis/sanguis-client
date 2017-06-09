@@ -31,6 +31,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         ButterKnife.bind(this, view);
 
         SupportMapFragment map = SupportMapFragment.newInstance();
+        this.sFL.setId(0x148813);
         getChildFragmentManager().beginTransaction().replace(this.sFL.getId(), map).commit();
 
         map.getMapAsync(this);
