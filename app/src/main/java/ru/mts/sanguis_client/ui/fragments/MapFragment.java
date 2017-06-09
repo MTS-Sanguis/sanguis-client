@@ -8,12 +8,19 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
+import ru.mts.sanguis_client.mvp.views.MapView;
 
-public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback {
+public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView {
+
+    @InjectPresenter(type = PresenterType.GLOBAL, tag = "MapPresenter")
+    MapPresenter presenter;
 
     private FrameLayout sFL;
     private GoogleMap map;
@@ -41,5 +48,6 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
         //здесь карта впервые появляется.
+        presenter.mapLoaded(googleMap);
     }
 }
