@@ -4,15 +4,41 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import ru.mts.sanguis_client.R;
 
-public class MapFragment extends MvpAppCompatFragment {
+public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback {
+
+    private FrameLayout sFL;
+    private GoogleMap map;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstance){
         super.onCreateView(inflater, parent, savedInstance);
-        return inflater.inflate(R.layout.fragment_map, null, false);
+
+        this.sFL = new FrameLayout(getActivity());
+        return this.sFL;
     }
 
+    public void onViewCreated(View view, Bundle savedInstance){
+        super.onViewCreated(view, savedInstance);
+        ButterKnife.bind(this, view);
+
+        SupportMapFragment map = SupportMapFragment.newInstance();
+        getChildFragmentManager().beginTransaction().replace(this.sFL.getId(), map).commit();
+
+        map.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.map = googleMap;
+        //здесь карта впервые появляется.
+    }
 }
