@@ -49,9 +49,8 @@ import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
 import ru.mts.sanguis_client.mvp.views.MapView;
 
 
-public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView,
-    GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView
+{
 
     @InjectPresenter
     MapPresenter presenter;
@@ -66,7 +65,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     @BindView(R.id.fragment_map_main_text) TextView tvTitle;
     @BindView(R.id.fragment_map_additional_text) TextView tvAdditionalText;
 
-    private GoogleApiClient mGoogleApiClient;
+
     private GoogleMap mGoogleMap;
 
 
@@ -88,24 +87,6 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        Log.i("maps", "Buidlding GoogleMap API...");
-        //Initialize Google Play Services
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                Log.d("permission", "Already Granted");
-                buildGoogleApiClient();
-                mGoogleMap.setMyLocationEnabled(true);
-            } else {
-                //Request Location Permission
-                Log.d("permission", "Request");
-                checkLocationPermission();
-            }
-        }
-        else {
-            Log.d("permission", "Old SDK");
 
             checkLocationPermission();
             buildGoogleApiClient();
@@ -178,7 +159,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         });
 
         //здесь карта впервые появляется.
-        presenter.mapLoaded(mGoogleMap);
+        presenter.mapLoaded(mGoogleMap, getActivity());
     }
 
     @Override
@@ -196,8 +177,9 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         mGoogleApiClient.connect();
     }
 
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    private void checkLocationPermission() {
+
+
+    public void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -217,7 +199,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(getActivity(),
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MapPresenter.MY_PERMISSIONS_REQUEST_LOCATION );
                             }
                         })
                         .create()
@@ -228,7 +210,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MapPresenter.MY_PERMISSIONS_REQUEST_LOCATION );
             }
         }
     }
@@ -236,62 +218,15 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted. Do the
-                    // contacts-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(getContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-
-                        if (mGoogleApiClient == null) {
-                            buildGoogleApiClient();
-                        }
-                        mGoogleMap.setMyLocationEnabled(true);
-                    }
-
-                } else {
-
-                    // Permission denied, Disable the functionality that depends on this permission.
-                    Toast.makeText(this.getContext(), "permission denied", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other permissions this app might request.
-            // You can add here other case statements according to your requirement.
-        }
+        presenter.onRequestPermissionsResult(requestCode, permissions, grantResults, getActivity(), getContext());
     }
+
+
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        Log.d("location", "Request update");
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+    public void setClinicInfo(String title, String info) {
+        tvTitle.setText("Какой-то текст!");
+        tvTitle.setText("Какой-то текст!");
+        llClincInfo.setVisibility(View.VISIBLE);
     }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location newLocation) {
-        Location location = newLocation;
-
-        presenter.findNearestBloodStation(location);
-    }
-
 }

@@ -1,14 +1,29 @@
 package ru.mts.sanguis_client.mvp.presenters;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import android.view.View;
+import android.widget.Toast;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -20,11 +35,13 @@ import ru.mts.sanguis_client.common.GetNearbyPlacesData;
 import ru.mts.sanguis_client.mvp.views.MapView;
 
 @InjectViewState
-public class MapPresenter extends MvpPresenter<MapView> {
+public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private int PROXIMITY_RADIUS = 10000;
 
     Context mContext;
+    private GoogleApiClient mGoogleApiClient;
 
     GoogleMap mGoogleMap;
     Marker marker;
@@ -48,7 +65,44 @@ public class MapPresenter extends MvpPresenter<MapView> {
         criteria.setCostAllowed(true);
     }
 
-    public void mapLoaded(GoogleMap googleMap) {
+    public void mapLoaded(GoogleMap googleMap, Activity activity) {
+
+        Log.i("maps", "Buidlding GoogleMap API...");
+        //Initialize Google Play Services
+        this.mGoogleMap = googleMap;
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                //Location Permission already granted
+                Log.d("permission", "Already Granted");
+                buildGoogleApiClient(activity);
+                mGoogleMap.setMyLocationEnabled(true);
+            } else {
+                //Request Location Permission
+                Log.d("permission", "Request");
+                getViewState().checkLocationPermission();
+            }
+        }
+        else {
+            Log.d("permission", "Old SDK");
+
+            getViewState().checkLocationPermission();
+            buildGoogleApiClient(activity);
+            mGoogleMap.setMyLocationEnabled(true);
+        }
+
+
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Log.d(getClass().getSimpleName(), "Click!");
+
+            }
+        });
+
+
 
         mGoogleMap = googleMap;
 
@@ -62,6 +116,42 @@ public class MapPresenter extends MvpPresenter<MapView> {
 
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
 
+    }
+
+    private synchronized void buildGoogleApiClient(Activity activity) {
+        mGoogleApiClient = new GoogleApiClient.Builder(activity)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        Log.d("location", "Request update");
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location newLocation) {
+        Location location = newLocation;
+
+        findNearestBloodStation(location);
     }
 
     public void findNearestBloodStation(Location location) {
@@ -99,6 +189,41 @@ public class MapPresenter extends MvpPresenter<MapView> {
         googlePlacesUrl.append("&key=" + "AIzaSyCxSBD3QAbaylJLHZd57N-98gVQArjMfxY");
         Log.d("getUrl", googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
+    }
+
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults, Activity activity, Context context) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted. Do the
+                    // contacts-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(context,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        if (mGoogleApiClient == null) {
+                            buildGoogleApiClient(activity);
+                        }
+                        mGoogleMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+
+                    // Permission denied, Disable the functionality that depends on this permission.
+                    Toast.makeText(context, "permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other permissions this app might request.
+            // You can add here other case statements according to your requirement.
+        }
     }
 
 }
