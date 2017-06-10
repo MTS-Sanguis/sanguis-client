@@ -21,15 +21,24 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 import ru.mts.sanguis_client.common.GetNearbyPlacesData;
 import ru.mts.sanguis_client.mvp.views.MapView;
@@ -45,6 +54,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
 
     GoogleMap mGoogleMap;//FIXME потенциальная утечка памяти
     Marker marker;
+    Location location;
 
     private LocationManager locationManager;
     private final Criteria criteria = new Criteria();
@@ -65,7 +75,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
         criteria.setCostAllowed(true);
     }
 
-    public void mapLoaded(GoogleMap googleMap, Activity activity) {
+    public void mapLoaded(GoogleMap googleMap, final Activity activity) {
 
         Log.i("maps", "Buidlding GoogleMap API...");
         //Initialize Google Play Services
@@ -94,15 +104,68 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
         }
 
 
-        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Log.d(getClass().getSimpleName(), "Click!");
 
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(final Marker marker) {
+
+                Comparator<HashMap<String, String>> PlaceComparator
+                        = new Comparator<HashMap<String, String>>() {
+
+                    public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+                        double lat = marker.getPosition().latitude;
+                        double lng = marker.getPosition().longitude;
+
+                        double lat1 = Double.parseDouble(o1.get("lat"));
+                        double lng1 = Double.parseDouble(o1.get("lng"));
+                        double lat2 = Double.parseDouble(o2.get("lat"));
+                        double lng2 = Double.parseDouble(o2.get("lng"));
+
+                        return Double.compare(
+                                Math.sqrt((lat1 - lat) * (lat1 - lat) + (lng1 - lng) * (lng1 - lng)),
+                                Math.sqrt((lat2 - lat) * (lat2 - lat) + (lng2 - lng) * (lng2 - lng))
+                        );
+                    }
+
+                };
+
+                Log.d(getClass().getSimpleName(), "Click!");
+                getViewState().setTitle(marker.getTitle());
+
+                Collections.sort(getNearbyPlacesData.nearbyPlacesList, PlaceComparator);
+
+                String closestPlaceId = getNearbyPlacesData.nearbyPlacesList.get(0).get("place_id");
+
+                for (HashMap<String, String> place: getNearbyPlacesData.nearbyPlacesList) {
+                    Log.i("place", place.get("place_name"));
+                }
+
+                Places.GeoDataApi.getPlaceById(mGoogleApiClient, closestPlaceId)
+                        .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                            @Override
+                            public void onResult(PlaceBuffer places) {
+                                if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                                    final Place nearestPlace = places.get(0);
+                                    Log.i("nearest", "Place found: " + nearestPlace.getId());
+
+                                    getViewState().setAdditionalTitle(
+                                            nearestPlace.getPhoneNumber() + "\n" +
+                                            nearestPlace.getAddress() + "\n" +
+                                            nearestPlace.getWebsiteUri()
+                                    );
+
+
+                                } else {
+                                    Log.e("nearest", "Place not found");
+                                }
+                                places.release();
+                            }
+                        });
+
+                getViewState().showClinicInfo();
             }
         });
-
-
 
         mGoogleMap = googleMap;
 
@@ -123,6 +186,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
                 .build();
         mGoogleApiClient.connect();
     }
@@ -149,12 +213,16 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
 
     @Override
     public void onLocationChanged(Location newLocation) {
-        Location location = newLocation;
+        location = newLocation;
 
-        findNearestBloodStation(location);
+        findNearestBloodStation(newLocation);
     }
 
     public void findNearestBloodStation(Location location) {
+        findNearest(location, "blood,transfusion");
+    }
+
+    public void findNearest(Location location, String input) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //place marker where user just clicked
         Log.i("maps", "Placing current location marker...");
@@ -167,8 +235,8 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
 
-        Log.i("maps", "Getting nearest blood station...");
-        String url = getUrl(location.getLatitude(), location.getLongitude(), "blood,transfusion");
+        Log.i("maps", "Getting nearest objects...");
+        String url = getUrl(location.getLatitude(), location.getLongitude(), input);
         Object[] DataTransfer = new Object[2];
         DataTransfer[0] = mGoogleMap;
         DataTransfer[1] = url;
@@ -228,6 +296,8 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
 
     public void stationSearch(CharSequence input){
         Log.d(getClass().getSimpleName(), "SEARCH!");
+
+        findNearest(location, input.toString());
     }
 
 }

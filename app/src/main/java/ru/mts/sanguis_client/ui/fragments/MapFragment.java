@@ -35,6 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -90,75 +91,8 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
-            checkLocationPermission();
-            buildGoogleApiClient();
-            mGoogleMap.setMyLocationEnabled(true);
-        }
-
-
-        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-
-
-            @Override
-            public void onInfoWindowClick(final Marker marker) {
-
-                Comparator<HashMap<String, String>> PlaceComparator
-                        = new Comparator<HashMap<String, String>>() {
-
-                    public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
-                        double lat = marker.getPosition().latitude;
-                        double lng = marker.getPosition().longitude;
-
-                        double lat1 = Double.parseDouble(o1.get("lat"));
-                        double lng1 = Double.parseDouble(o1.get("lng"));
-                        double lat2 = Double.parseDouble(o2.get("lat"));
-                        double lng2 = Double.parseDouble(o2.get("lng"));
-
-                        return Double.compare(
-                                Math.sqrt((lat1 - lat) * (lat1 - lat) + (lng1 - lng) * (lng1 - lng)),
-                                Math.sqrt((lat2 - lat) * (lat2 - lat) + (lng2 - lng) * (lng2 - lng))
-                                );
-                    }
-
-                };
-
-                Log.d(getClass().getSimpleName(), "Click!");
-                tvTitle.setText(marker.getTitle());
-
-                List<HashMap<String, String>> places = presenter.getNearbyPlacesData.nearbyPlacesList;
-
-                Collections.sort(places, PlaceComparator);
-
-                String closestPlaceId = places.get(0).get("place_id");
-
-                Places.GeoDataApi.getPlaceById(mGoogleApiClient, closestPlaceId)
-                        .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                            @Override
-                            public void onResult(PlaceBuffer places) {
-                                if (places.getStatus().isSuccess() && places.getCount() > 0) {
-                                    final Place nearestPlace = places.get(0);
-                                    Log.i("bloodstation", "Place found: " + nearestPlace.getId());
-
-                                    tvAdditionalText.setText(
-                                        "Ближайшая станция переливания крови: \n" +
-                                        nearestPlace.getPhoneNumber() + "\n" +
-                                        nearestPlace.getAddress() + "\n" +
-                                        nearestPlace.getWebsiteUri()
-                                    );
-
-
-                                } else {
-                                    Log.e("bloodstation", "Place not found");
-                                }
-                                places.release();
-                            }
-                        });
-
-
-                llClincInfo.setVisibility(View.VISIBLE);
-            }
-        });
+        checkLocationPermission();
+        mGoogleMap.setMyLocationEnabled(true);
 
         //здесь карта впервые появляется.
         presenter.mapLoaded(mGoogleMap, getActivity());
@@ -168,17 +102,6 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
     }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .addApi(Places.GEO_DATA_API)
-                .build();
-        mGoogleApiClient.connect();
-    }
-
 
 
     public void checkLocationPermission() {
@@ -218,6 +141,21 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     }
 
     @Override
+    public void setTitle(String title) {
+        tvTitle.setText(title);
+    }
+
+    @Override
+    public void setAdditionalTitle(String title) {
+        tvAdditionalText.setText(title);
+    }
+
+    @Override
+    public void showClinicInfo() {
+        llClincInfo.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         presenter.onRequestPermissionsResult(requestCode, permissions, grantResults, getActivity(), getContext());
@@ -242,6 +180,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
                 break;
             case R.id.fragment_map_to_list:
                 Intent intent = new Intent(getContext(), StationListActivity.class);
+                intent.putExtra("nearbyPlacesData", (Serializable) presenter.getNearbyPlacesData.nearbyPlacesList);
                 startActivity(intent);
                 break;
             default:

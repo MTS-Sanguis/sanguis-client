@@ -12,4 +12,13 @@ public interface MapView extends MvpView {
     @StateStrategyType(SkipStrategy.class)
     void checkLocationPermission();
 
+    @StateStrategyType(SkipStrategy.class)
+    void setTitle(String title);
+
+    @StateStrategyType(SkipStrategy.class)
+    void setAdditionalTitle(String title);
+
+    @StateStrategyType(SkipStrategy.class)
+    void showClinicInfo();
+
 }
