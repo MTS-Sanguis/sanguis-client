@@ -8,7 +8,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import java.util.HashMap;
 import java.util.List;
 
-@StateStrategyType(SkipStrategy.class)
 public interface ProfileView extends MvpView {
 
     //передаешь Drawable, который как-либо создаешь уже внутри контекста Android
@@ -17,4 +16,5 @@ public interface ProfileView extends MvpView {
     //Пары ключ-значение, где ключ это имя поля ("ФИО", "Адрес", "Телефон"), а значение это хбуквально значение
     // ("Иванов Иван Иванович", "г. Москва" итд)
     void setDescription(String description);
+    void setBlood(String setBlood);
 }

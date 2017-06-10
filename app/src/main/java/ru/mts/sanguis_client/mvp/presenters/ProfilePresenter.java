@@ -20,6 +20,7 @@ public class ProfilePresenter extends MvpPresenter<ProfileView> {
     public void setCurrentInformation(){
         getViewState().setProfileName("Петров Петр Петрович");
         getViewState().setDescription("57 лет, муж.");
+        getViewState().setBlood("IV");
     }
 
 

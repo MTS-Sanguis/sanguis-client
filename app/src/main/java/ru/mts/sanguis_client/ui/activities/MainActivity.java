@@ -99,4 +99,8 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         vpMainFragments.setCurrentItem(2);
     }
 
+    public void setCalendar(){
+        vpMainFragments.setCurrentItem(1);
+    }
+
 }

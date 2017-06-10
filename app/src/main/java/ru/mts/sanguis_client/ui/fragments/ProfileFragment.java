@@ -1,5 +1,6 @@
 package ru.mts.sanguis_client.ui.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import ru.mts.sanguis_client.mvp.presenters.ProfilePresenter;
 import ru.mts.sanguis_client.mvp.views.ProfileView;
 import ru.mts.sanguis_client.ui.activities.BonucesActivity;
 import ru.mts.sanguis_client.ui.activities.FaqActivity;
+import ru.mts.sanguis_client.ui.activities.MainActivity;
 import ru.mts.sanguis_client.ui.adapters.InfoListAdapter;
 
 public class ProfileFragment extends MvpAppCompatFragment implements ProfileView, View.OnClickListener {
@@ -26,6 +28,7 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     @BindView(R.id.fragment_profile_name) TextView tvUserName;
     @BindView(R.id.fragment_profile_photo) CircleImageView photo;
     @BindView(R.id.fragment_profile_description) TextView tvDescription;
+    @BindView(R.id.fragment_profile_blood) TextView tvBlood;
 
     @BindView(R.id.fragment_profile_calendar) RelativeLayout rlCalrndar;
     @BindView(R.id.fragment_profile_faq) RelativeLayout rlFaq;
@@ -51,6 +54,8 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
         rlFaq.setOnClickListener(this);
         rlBonuce.setOnClickListener(this);
         rlCharity.setOnClickListener(this);
+
+        presenter.setCurrentInformation();
     }
 
 
@@ -71,12 +76,20 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     }
 
     @Override
+    public void setBlood(String setBlood) {
+        tvBlood.setText(setBlood);
+    }
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
 
         switch (id){
             case R.id.fragment_profile_calendar:
-
+                Activity activity = getActivity();
+                if(activity instanceof MainActivity){
+                    ((MainActivity) activity).setCalendar();
+                }
                 break;
             case R.id.fragment_profile_faq:
                 startActivity(new Intent(getContext(), FaqActivity.class));
