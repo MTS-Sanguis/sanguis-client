@@ -1,5 +1,6 @@
 package ru.mts.sanguis_client.ui.fragments;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.ProfilePresenter;
 import ru.mts.sanguis_client.mvp.views.ProfileView;
+import ru.mts.sanguis_client.ui.activities.BonucesActivity;
 import ru.mts.sanguis_client.ui.adapters.InfoListAdapter;
 
 public class ProfileFragment extends MvpAppCompatFragment implements ProfileView, View.OnClickListener {
@@ -79,7 +81,8 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
 
                 break;
             case R.id.fragment_profile_bonuce:
-
+                Intent intent = new Intent(getContext(), BonucesActivity.class);
+                startActivity(intent);
                 break;
             case R.id.fragment_profile_charity:
 

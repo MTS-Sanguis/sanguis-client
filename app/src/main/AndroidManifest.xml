@@ -31,6 +31,7 @@
         </activity>
         <activity android:name=".ui.activities.AuthActivity" />
         <activity android:name=".ui.activities.StationListActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".ui.activities.BonucesActivity" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
