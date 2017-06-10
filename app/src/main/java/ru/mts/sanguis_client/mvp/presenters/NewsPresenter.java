@@ -2,46 +2,52 @@ package ru.mts.sanguis_client.mvp.presenters;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.arellomobile.mvp.viewstate.MvpViewState;
-
 import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSReader;
 import org.mcsoxford.rss.RSSReaderException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import ru.mts.sanguis_client.mvp.models.NewsModel;
 import ru.mts.sanguis_client.mvp.views.NewsView;
+
+import java.util.ArrayList;
 
 
 @InjectViewState
 public class NewsPresenter extends MvpPresenter<NewsView> {
-    class GetNews extends AsyncTask<String, Void, RSSFeed> {
-        protected RSSFeed doInBackground(String... uri) {
-            RSSReader reader = new RSSReader();
-            RSSFeed feed = null;
-            try {
-                feed = reader.load(uri[0]);
-            } catch (RSSReaderException e) {
-                e.printStackTrace();
-            }
+//    class GetNews extends AsyncTask<String, Void, RSSFeed> {
+//        protected RSSFeed doInBackground(String... uri) {
+//            RSSReader reader = new RSSReader();
+//            RSSFeed feed = null;
+//            try {
+//                feed = reader.load(uri[0]);
+//            } catch (RSSReaderException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return feed;
+//        }
+//
+//        protected void onPostExecute(RSSFeed feed) {
+//            Log.d("feed", feed.getTitle());
+//
+//            getViewState().setNews(feed.getItems().subList(0, 10)); //ЧЕ?!
+//        }
+//    }
 
-            return feed;
-        }
+    private ArrayList<NewsModel> news;
 
-        protected void onPostExecute(RSSFeed feed) {
-            Log.d("feed", feed.getTitle());
-            
-            getViewState().setNews(feed.getItems().subList(0, 10));
-        }
+    @Override
+    public void onFirstViewAttach(){
+        loadNewsFeed();
+
+        getViewState().setNews(new ArrayList<>(news));
     }
 
-    public void populateNews() throws RSSReaderException {
-        new GetNews().execute("http://yadonor.ru/rss/news.rss");
+    private void loadNewsFeed(){
+        news = new ArrayList<>();
+        for(int i=0;i<15;i++){
+            news.add(new NewsModel("Новость "+i, "Длинное захватывающее описание, которое привлекает внимание "+ i));
+        }
     }
 }

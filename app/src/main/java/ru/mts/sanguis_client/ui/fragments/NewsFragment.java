@@ -18,6 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.mvp.models.NewsModel;
 import ru.mts.sanguis_client.mvp.presenters.NewsPresenter;
 import ru.mts.sanguis_client.mvp.views.NewsView;
 import ru.mts.sanguis_client.ui.adapters.NewsAdapter;
@@ -42,20 +43,14 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
         super.onViewCreated(view, savedInstance);
         ButterKnife.bind(this, view);
 
-
         rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new NewsAdapter();
         rvNews.setAdapter(adapter);
-
-        try {
-            presenter.populateNews();
-        } catch (RSSReaderException e) {
-            e.printStackTrace();
-        }
+        rvNews.setNestedScrollingEnabled(false);
     }
 
     @Override
-    public void setNews(List<RSSItem> news) {
+    public void setNews(List<NewsModel> news) {
         if(adapter != null) {
             adapter.setNews(news);
             adapter.notifyDataSetChanged();

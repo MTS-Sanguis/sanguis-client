@@ -21,6 +21,7 @@ import org.mcsoxford.rss.RSSReader;
 import org.mcsoxford.rss.RSSReaderException;
 
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.mvp.models.NewsModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewHolder> {
 
-    private List<RSSItem> news;
+    private List<NewsModel> news;
 
     @Override
     public NewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,40 +42,24 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewHolder> {
 
     @Override
     public void onBindViewHolder(NewHolder holder, int position) {
-        RSSItem item = news.get(position);
+        NewsModel item = news.get(position);
         Log.d("news", "onBindViewHolder");
 
         holder.setTitle(item.getTitle());
-        holder.setDescription(Html.fromHtml(item.getDescription()));
-        try {
-            if (item.getThumbnails().size() > 0)
-                holder.setThumbnail(item.getThumbnails().get(0).getUrl().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        holder.setDescription(item.getDescription());
+
     }
-
-
 
     @Override
     public int getItemCount() {
-        if (news != null)
-            Log.d("news", String.format("Size: %d", news.size()));
         return news == null?0:news.size();
     }
 
-    public void setNews(List<RSSItem> news){
+    public void setNews(List<NewsModel> news){
         this.news = news;
-        Log.d("news", "setNews");
     }
 
-    public List<RSSItem> getNews() {
-        return this.news;
-    }
-
-
-
-    class NewHolder extends RecyclerView.ViewHolder{
+    class NewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private TextView description;
@@ -85,52 +70,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewHolder> {
         NewHolder(View itemView) {
             super(itemView);
 
-            title = (TextView)itemView.findViewById(R.id.item_news_titile);
+            title = (TextView) itemView.findViewById(R.id.item_news_titile);
             description = (TextView) itemView.findViewById(R.id.item_news_descripion);
             thumbnail = (ImageView) itemView.findViewById(R.id.item_news_thumb);
         }
 
-        void setTitle(String title){
+        void setTitle(String title) {
             this.title.setText(title);
         }
 
-        void setDescription(Spanned string){
+        void setDescription(String string) {
             this.description.setText(string);
         }
-
-        class GetPicture extends AsyncTask<String, Void, Drawable> {
-            public Drawable drawableFromUrl(String url) throws IOException {
-                Bitmap x;
-
-                HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-                connection.connect();
-                InputStream input = connection.getInputStream();
-
-                x = BitmapFactory.decodeStream(input);
-                return new BitmapDrawable(x);
-            }
-
-            protected Drawable doInBackground(String... uri) {
-                Drawable drawable = null;
-
-                try {
-                    drawable = drawableFromUrl(uri[0]);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return drawable;
-            }
-
-            protected void onPostExecute(Drawable getDrawable) {
-                thumbnail.setImageDrawable(getDrawable);
-            }
-        }
-
-        void setThumbnail(String url) throws IOException {
-            Log.i("thumbnail", url);
-            new GetPicture().execute(url);
-        }
     }
-
 }

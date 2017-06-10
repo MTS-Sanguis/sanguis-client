@@ -3,6 +3,7 @@
     package="ru.mts.sanguis_client">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -28,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.AuthActivity"></activity>
+        <activity android:name=".ui.activities.AuthActivity" />
         <activity android:name=".ui.activities.StationListActivity" android:theme="@style/AppTheme"/>
     </application>
 
