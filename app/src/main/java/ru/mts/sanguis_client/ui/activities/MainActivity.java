@@ -95,4 +95,8 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
 
     }
 
+    public void setHomePage(){
+        vpMainFragments.setCurrentItem(2);
+    }
+
 }

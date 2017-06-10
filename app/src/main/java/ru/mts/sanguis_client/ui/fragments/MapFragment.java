@@ -1,52 +1,33 @@
 package ru.mts.sanguis_client.ui.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Marker;
-
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
 import ru.mts.sanguis_client.mvp.views.MapView;
+import ru.mts.sanguis_client.ui.activities.MainActivity;
 import ru.mts.sanguis_client.ui.activities.StationListActivity;
+
+import java.io.Serializable;
 
 
 public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView, View.OnClickListener{
@@ -66,6 +47,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     @BindView(R.id.fragment_map_search) RelativeLayout rvSearchBtn;
     @BindView(R.id.fragment_map_to_list) RelativeLayout rvListBtn;
     @BindView(R.id.fragment_map_search_input) EditText searchInput;
+    @BindView(R.id.fragment_map_back) RelativeLayout rlBackButton;
 
     private GoogleMap mGoogleMap;
 
@@ -82,6 +64,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         ButterKnife.bind(this, view);
         rvSearchBtn.setOnClickListener(this);
         rvListBtn.setOnClickListener(this);
+        rlBackButton.setOnClickListener(this);
         SupportMapFragment map = SupportMapFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(flMap.getId(), map).commit();
         map.getMapAsync(this);
@@ -165,8 +148,6 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
 
     @Override
     public void setClinicInfo(String title, String info) {
-        tvTitle.setText("Какой-то текст!");
-        tvTitle.setText("Какой-то текст!");
         llClincInfo.setVisibility(View.VISIBLE);
     }
 
@@ -182,6 +163,11 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
                 Intent intent = new Intent(getContext(), StationListActivity.class);
                 intent.putExtra("nearbyPlacesData", (Serializable) presenter.getNearbyPlacesData.nearbyPlacesList);
                 startActivity(intent);
+                break;
+            case R.id.fragment_map_back:
+                Activity activity = getActivity();
+                if(activity instanceof MainActivity)
+                    ((MainActivity) activity).setHomePage();
                 break;
             default:
                 break;
