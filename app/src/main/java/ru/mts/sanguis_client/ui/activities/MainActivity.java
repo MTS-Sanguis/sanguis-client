@@ -41,17 +41,19 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         ButterKnife.bind(this);
         vpMainFragments.setAdapter(new ActivityMainPagerAdapter(getSupportFragmentManager()));
         vpMainFragments.addOnPageChangeListener(this);
+        vpMainFragments.setCurrentItem(2);
+        vpMainFragments.setOffscreenPageLimit(3);
 
         int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
 
         List<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.ic_user), color).title("Профиль").build());
-        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.ic_map), color).title("Карта").build());
-        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.ic_calendar), color).title("События").build());
-        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.ic_news), color).title("Новости").build());
+        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.news), color).title("Новости").build());
+        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.calendar), color).title("События").build());
+        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.user), color).title("Профиль").build());
+        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.map), color).title("Карта").build());
 
         ntbMenu.setModels(models);
-        ntbMenu.setViewPager(vpMainFragments, 0);
+        ntbMenu.setViewPager(vpMainFragments, 2);
     }
 
     @Override
@@ -68,20 +70,16 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         String title;
 
         switch (position){
-            case 0:
-                title = "Профиль";
-//
-//                String mtsAuthUrl = "https://login.mts.ru/amserver/oauth2/auth?client_id=test@b2b.mts.ru&scope=openid%20profile%20mobile&redirect_uri=http s%3A%2F%2Fapp.domain.ru%2Foauth2%2Fcallback.aspx&response_type=code&display=touch&state=1";
-//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mtsAuthUrl));
-//                startActivity(browserIntent);
-                break;
-            case 1:
-                title = "Карта";
-                break;
             case 2:
-                title = "События";
+                title = "Профиль";
                 break;
             case 3:
+                title = "Карта";
+                break;
+            case 1:
+                title = "События";
+                break;
+            case 0:
                 title = "Новости";
                 break;
             default:

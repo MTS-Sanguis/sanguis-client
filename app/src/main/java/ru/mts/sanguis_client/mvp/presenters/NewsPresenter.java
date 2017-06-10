@@ -17,8 +17,8 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
 
         RSSReader reader = new RSSReader();
         String uri = "http://yadonor.ru/rss/news.rss?region=35";
-        RSSFeed feed = reader.load(uri);
+        //RSSFeed feed = reader.load(uri);
 
-        getViewState().setNews(feed.getItems());
+        //getViewState().setNews(feed.getItems());
     }
 }

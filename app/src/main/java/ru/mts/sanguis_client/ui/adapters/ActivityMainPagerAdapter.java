@@ -19,10 +19,12 @@ public class ActivityMainPagerAdapter extends FragmentPagerAdapter {
 
     public ActivityMainPagerAdapter(FragmentManager fm){
         super(fm);
+        fragments.add(new NewsFragment());
+        fragments.add(new CalendarFragment());
         fragments.add(new ProfileFragment());
         fragments.add(new MapFragment());
-        fragments.add(new CalendarFragment());
-        fragments.add(new NewsFragment());
+
+
     }
 
     @Override
