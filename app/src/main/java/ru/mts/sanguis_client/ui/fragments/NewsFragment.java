@@ -9,9 +9,16 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
+import ru.mts.sanguis_client.mvp.presenters.NewsPresenter;
 
 public class NewsFragment extends MvpAppCompatFragment {
+
+    @InjectPresenter
+    NewsPresenter presenter;
 
     @BindView(R.id.fragment_news_list) RecyclerView rvNews;
 
@@ -25,6 +32,9 @@ public class NewsFragment extends MvpAppCompatFragment {
     public void onViewCreated(View view, Bundle savedInstance){
         super.onViewCreated(view, savedInstance);
         ButterKnife.bind(this, view);
+
+
+
 
         rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNews.setAdapter(new RecyclerView.Adapter() {

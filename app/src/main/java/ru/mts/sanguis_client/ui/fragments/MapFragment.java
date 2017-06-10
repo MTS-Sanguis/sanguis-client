@@ -18,20 +18,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import butterknife.BindView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
@@ -81,6 +91,9 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
+        checkLocationPermission();
+        mGoogleMap.setMyLocationEnabled(true);
+
         //здесь карта впервые появляется.
         presenter.mapLoaded(mGoogleMap, getActivity());
     }
@@ -89,8 +102,6 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
     }
-
-
 
 
     public void checkLocationPermission() {
@@ -130,6 +141,21 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     }
 
     @Override
+    public void setTitle(String title) {
+        tvTitle.setText(title);
+    }
+
+    @Override
+    public void setAdditionalTitle(String title) {
+        tvAdditionalText.setText(title);
+    }
+
+    @Override
+    public void showClinicInfo() {
+        llClincInfo.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         presenter.onRequestPermissionsResult(requestCode, permissions, grantResults, getActivity(), getContext());
@@ -154,6 +180,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
                 break;
             case R.id.fragment_map_to_list:
                 Intent intent = new Intent(getContext(), StationListActivity.class);
+                intent.putExtra("nearbyPlacesData", (Serializable) presenter.getNearbyPlacesData.nearbyPlacesList);
                 startActivity(intent);
                 break;
             default:
