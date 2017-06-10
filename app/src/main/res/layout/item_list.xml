@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-            android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
     <TextView
-            android:id="@+id/item_list_field"
-            android:padding="@dimen/common_padding"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".35"
-            android:text="@string/debug"
-            android:textAlignment="textEnd"/>
+        android:id="@+id/item_list_field"
+        android:padding="@dimen/common_padding"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".35"
+        android:text="@string/debug"
+        android:textAlignment="textEnd"/>
     <TextView
-            android:id="@+id/item_list_value"
-            android:padding="@dimen/common_padding"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".65"
-            android:text="@string/debug"
-            android:textColor="@android:color/black"/>
+        android:id="@+id/item_list_value"
+        android:padding="@dimen/common_padding"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".65"
+        android:text="@string/debug"
+        android:textColor="@android:color/black"/>
 </LinearLayout>

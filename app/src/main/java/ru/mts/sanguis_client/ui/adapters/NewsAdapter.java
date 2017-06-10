@@ -1,10 +1,12 @@
 package ru.mts.sanguis_client.ui.adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -27,11 +29,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewHolder> {
 
     private List<NewsModel> news;
+
+    private ArrayList<Drawable> drawables;
+    public NewsAdapter(Context context){
+        drawables = new ArrayList<>();
+
+        drawables.add(ContextCompat.getDrawable(context, R.drawable.bacteria));
+        drawables.add(ContextCompat.getDrawable(context, R.drawable.virus));
+        drawables.add(ContextCompat.getDrawable(context, R.drawable.medicine));
+        drawables.add(ContextCompat.getDrawable(context, R.drawable.thumbnail));
+    }
 
     @Override
     public NewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,6 +60,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewHolder> {
 
         holder.setTitle(item.getTitle());
         holder.setDescription(item.getDescription());
+        holder.setThumbnail(drawables.get(position % drawables.size()));
+
 
     }
 
@@ -64,6 +79,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewHolder> {
         private TextView title;
         private TextView description;
         private ImageView thumbnail;
+        private ImageView background;
 
         Drawable drawable;
 
@@ -81,6 +97,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewHolder> {
 
         void setDescription(String string) {
             this.description.setText(string);
+        }
+
+        void setThumbnail(Drawable thumbnail){
+            this.thumbnail.setImageDrawable(thumbnail);
+            //this.background.setImageDrawable(thumbnail);
         }
     }
 }

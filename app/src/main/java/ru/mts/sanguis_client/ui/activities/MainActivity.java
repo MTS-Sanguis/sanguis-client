@@ -47,7 +47,7 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
 
         List<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.news), color).title("Новости").build());
+        models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.info), color).title("Новости").build());
         models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.calendar), color).title("События").build());
         models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.user), color).title("Профиль").build());
         models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.map), color).title("Карта").build());

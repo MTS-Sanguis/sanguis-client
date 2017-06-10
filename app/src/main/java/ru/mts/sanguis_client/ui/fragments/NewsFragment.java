@@ -44,7 +44,7 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
         ButterKnife.bind(this, view);
 
         rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new NewsAdapter();
+        adapter = new NewsAdapter(getContext());
         rvNews.setAdapter(adapter);
         rvNews.setNestedScrollingEnabled(false);
     }
