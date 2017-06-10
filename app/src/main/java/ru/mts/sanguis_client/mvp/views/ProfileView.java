@@ -2,10 +2,13 @@ package ru.mts.sanguis_client.mvp.views;
 
 import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 import java.util.HashMap;
 import java.util.List;
 
+@StateStrategyType(SkipStrategy.class)
 public interface ProfileView extends MvpView {
 
     //передаешь Drawable, который как-либо создаешь уже внутри контекста Android

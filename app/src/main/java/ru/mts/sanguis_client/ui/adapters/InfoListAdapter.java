@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ru.mts.sanguis_client.R;
 
+import java.util.HashMap;
+
 public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.ItemHolder> {
 
-
+    private HashMap<String, String> profileFields;
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -24,7 +26,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.ItemHo
 
     @Override
     public int getItemCount() {
-        return 17;//просто константа из головы
+        return profileFields==null?0:profileFields.size();//просто константа из головы
     }
 
     class ItemHolder extends RecyclerView.ViewHolder {
@@ -42,5 +44,10 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.ItemHo
             tvField.setText(field);
             tvValue.setText(value);
         }
+    }
+
+    public void setProfileFields(HashMap<String, String> fields){
+        this.profileFields = fields;
+        this.notifyDataSetChanged();
     }
 }
