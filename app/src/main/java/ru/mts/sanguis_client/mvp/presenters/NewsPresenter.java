@@ -28,6 +28,7 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
             } catch (RSSReaderException e) {
                 e.printStackTrace();
             }
+
             return feed;
         }
 
