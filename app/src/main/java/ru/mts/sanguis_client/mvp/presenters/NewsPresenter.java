@@ -28,6 +28,13 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
             } catch (RSSReaderException e) {
                 e.printStackTrace();
             }
+//            try {
+//                Log.d(getClass().getSimpleName(), "Thread slepped!");
+//                Thread.sleep(10000);
+//                Log.d(getClass().getSimpleName(), "Thread weak up!");
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             return feed;
         }
 

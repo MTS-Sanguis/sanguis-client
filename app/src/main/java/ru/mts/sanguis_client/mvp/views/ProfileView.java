@@ -16,6 +16,5 @@ public interface ProfileView extends MvpView {
     void setProfileName(String name);
     //Пары ключ-значение, где ключ это имя поля ("ФИО", "Адрес", "Телефон"), а значение это хбуквально значение
     // ("Иванов Иван Иванович", "г. Москва" итд)
-    void setProfileFields(HashMap<String, String> fields);
-
+    void setDescription(String description);
 }

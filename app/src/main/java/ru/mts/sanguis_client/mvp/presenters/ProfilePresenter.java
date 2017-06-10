@@ -11,8 +11,6 @@ import java.util.HashMap;
 @InjectViewState
 public class ProfilePresenter extends MvpPresenter<ProfileView> {
 
-    private HashMap<String, String> profileFields;
-
     @Override
     public void onFirstViewAttach(){
         Log.d(Utils.PRESENTER_DEBUG_TAG, "Created:" + getClass().getSimpleName());
@@ -21,15 +19,8 @@ public class ProfilePresenter extends MvpPresenter<ProfileView> {
 
     public void setCurrentInformation(){
         getViewState().setProfileName("Петров Петр Петрович");
-        if(profileFields == null)
-            loadProfileFields();
-
-        getViewState().setProfileFields(new HashMap<>(profileFields)); //ради ищбежания утечки, отсоединяю ссылки.
+        getViewState().setDescription("57 лет, муж.");
     }
 
-    private void loadProfileFields(){
-        profileFields = new HashMap<>();
-        //загружать информацию.
-    }
 
 }

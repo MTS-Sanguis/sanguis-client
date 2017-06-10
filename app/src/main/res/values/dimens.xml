@@ -3,4 +3,7 @@
     <dimen name="common_padding">5dp</dimen>
     <dimen name="profine_name_margin">15dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="profile_margin_left">5dp</dimen>
+    <dimen name="profile_text_size">18sp</dimen>
+    <dimen name="profile_margin_top">10dp</dimen>
 </resources>

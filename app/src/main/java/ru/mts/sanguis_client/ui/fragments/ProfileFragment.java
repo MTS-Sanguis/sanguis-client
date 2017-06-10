@@ -24,9 +24,9 @@ import java.util.HashMap;
 
 public class ProfileFragment extends MvpAppCompatFragment implements ProfileView {
 
-    @BindView(R.id.fragment_profile_info_list) RecyclerView rvInfoList;
     @BindView(R.id.fragment_profile_name) TextView tvUserName;
     @BindView(R.id.fragment_profile_photo) CircleImageView photo;
+    @BindView(R.id.fragment_profile_description) TextView tvDescription;
 
     @InjectPresenter(type = PresenterType.GLOBAL, tag = "ProfilePresenter")
     ProfilePresenter presenter;
@@ -43,10 +43,6 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     public void onViewCreated(View view, Bundle savedInstance){
         super.onViewCreated(view, savedInstance);
         ButterKnife.bind(this, view);
-
-        rvInfoList.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.adapter = new InfoListAdapter();
-        rvInfoList.setAdapter(this.adapter);
     }
 
 
@@ -60,11 +56,9 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
         tvUserName.setText(name);
     }
 
+
     @Override
-    public void setProfileFields(HashMap<String, String> fields) {
-        if(this.adapter != null)
-            this.adapter.setProfileFields(fields);
-        else
-            Log.w(getClass().getSimpleName(), "Adapter not set!");
+    public void setDescription(String description) {
+        tvDescription.setText(description);
     }
 }
