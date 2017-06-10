@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.AuthActivity"></activity>
+        <activity android:name=".ui.activities.StationListActivity" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

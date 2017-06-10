@@ -2,6 +2,7 @@ package ru.mts.sanguis_client.ui.fragments;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -44,6 +45,7 @@ import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
 import ru.mts.sanguis_client.mvp.views.MapView;
+import ru.mts.sanguis_client.ui.activities.StationListActivity;
 
 
 public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView, View.OnClickListener{
@@ -237,6 +239,10 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         switch (id){
             case R.id.fragment_map_search:
                 presenter.stationSearch(searchInput.getText());
+                break;
+            case R.id.fragment_map_to_list:
+                Intent intent = new Intent(getContext(), StationListActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
