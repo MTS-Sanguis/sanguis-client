@@ -56,7 +56,8 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
     @Override
     public void setNews(List<RSSItem> news) {
-        if(adapter != null)
+        if(adapter != null) {
             adapter.setNews(news);
+        }
     }
 }
