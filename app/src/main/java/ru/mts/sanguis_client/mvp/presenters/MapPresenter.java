@@ -47,8 +47,6 @@ import ru.mts.sanguis_client.mvp.views.MapView;
 public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private int PROXIMITY_RADIUS = 10000;
-
     Context mContext;
     private GoogleApiClient mGoogleApiClient;
 
