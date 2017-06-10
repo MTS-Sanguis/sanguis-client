@@ -20,20 +20,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.BindView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
@@ -105,11 +114,65 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
 
 
         mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+
+
             @Override
-            public void onInfoWindowClick(Marker marker) {
+            public void onInfoWindowClick(final Marker marker) {
+
+                Comparator<HashMap<String, String>> PlaceComparator
+                        = new Comparator<HashMap<String, String>>() {
+
+                    public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+                        double lat = marker.getPosition().latitude;
+                        double lng = marker.getPosition().longitude;
+
+                        double lat1 = Double.parseDouble(o1.get("lat"));
+                        double lng1 = Double.parseDouble(o1.get("lng"));
+                        double lat2 = Double.parseDouble(o2.get("lat"));
+                        double lng2 = Double.parseDouble(o2.get("lng"));
+
+                        return Double.compare(
+                                Math.sqrt((lat1 - lat) * (lat1 - lat) + (lng1 - lng) * (lng1 - lng)),
+                                Math.sqrt((lat2 - lat) * (lat2 - lat) + (lng2 - lng) * (lng2 - lng))
+                                );
+                    }
+
+                };
+
                 Log.d(getClass().getSimpleName(), "Click!");
-                tvTitle.setText("Какой-то текст!");
-                tvTitle.setText("Какой-то текст!");
+                tvTitle.setText(marker.getTitle());
+
+                List<HashMap<String, String>> places = presenter.getNearbyPlacesData.nearbyPlacesList;
+
+                Collections.sort(places, PlaceComparator);
+
+                String closestPlaceId = places.get(0).get("place_id");
+
+                Places.GeoDataApi.getPlaceById(mGoogleApiClient, closestPlaceId)
+                        .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                            @Override
+                            public void onResult(PlaceBuffer places) {
+                                if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                                    final Place nearestPlace = places.get(0);
+                                    Log.i("bloodstation", "Place found: " + nearestPlace.getId());
+
+                                    tvAdditionalText.setText(
+                                        "Ближайшая станция переливания крови: \n" +
+                                        nearestPlace.getPhoneNumber() + "\n" +
+                                        nearestPlace.getAddress() + "\n" +
+                                        nearestPlace.getWebsiteUri()
+                                    );
+
+
+                                } else {
+                                    Log.e("bloodstation", "Place not found");
+                                }
+                                places.release();
+                            }
+                        });
+
+
                 llClincInfo.setVisibility(View.VISIBLE);
             }
         });
@@ -128,6 +191,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
                 .build();
         mGoogleApiClient.connect();
     }

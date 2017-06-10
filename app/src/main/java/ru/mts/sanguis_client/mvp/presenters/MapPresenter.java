@@ -33,6 +33,7 @@ public class MapPresenter extends MvpPresenter<MapView> {
     private final Criteria criteria = new Criteria();
 
     public String bestAvailableProvider;
+    public GetNearbyPlacesData getNearbyPlacesData;
 
     public MapPresenter(Context context) {
         mContext = context;
@@ -82,7 +83,7 @@ public class MapPresenter extends MvpPresenter<MapView> {
         DataTransfer[0] = mGoogleMap;
         DataTransfer[1] = url;
         Log.i("maps", url);
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+        getNearbyPlacesData = new GetNearbyPlacesData();
         getNearbyPlacesData.execute(DataTransfer);
 
     }
