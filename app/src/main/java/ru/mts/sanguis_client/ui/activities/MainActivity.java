@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.EditText;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         vpMainFragments.setAdapter(new ActivityMainPagerAdapter(getSupportFragmentManager()));
         vpMainFragments.addOnPageChangeListener(this);
 
-        int color = ContextCompat.getColor(this, R.color.colorAccent);
+        int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
 
         List<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(new NavigationTabBar.Model.Builder(ContextCompat.getDrawable(this, R.drawable.ic_user), color).title("Профиль").build());
@@ -69,11 +70,10 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         switch (position){
             case 0:
                 title = "Профиль";
-
-                String mtsAuthUrl = "https://login.mts.ru/amserver/oauth2/auth?client_id=test@b2b.mts.ru&scope=openid%20profile%20mobile&redirect_uri=http s%3A%2F%2Fapp.domain.ru%2Foauth2%2Fcallback.aspx&response_type=code&display=touch&state=1";
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mtsAuthUrl));
-                startActivity(browserIntent);
-
+//
+//                String mtsAuthUrl = "https://login.mts.ru/amserver/oauth2/auth?client_id=test@b2b.mts.ru&scope=openid%20profile%20mobile&redirect_uri=http s%3A%2F%2Fapp.domain.ru%2Foauth2%2Fcallback.aspx&response_type=code&display=touch&state=1";
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mtsAuthUrl));
+//                startActivity(browserIntent);
                 break;
             case 1:
                 title = "Карта";
