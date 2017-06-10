@@ -5,17 +5,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.arellomobile.mvp.MvpAppCompatActivity;
-import devlight.io.library.ntb.NavigationTabBar;
-import ru.mts.sanguis_client.R;
-import ru.mts.sanguis_client.ui.adapters.ActivityMainPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPageChangeListener{
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import devlight.io.library.ntb.NavigationTabBar;
+import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.ui.adapters.ActivityMainPagerAdapter;
+
+public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.activity_main_pager) ViewPager vpMainFragments;
     @BindView(R.id.activity_main_tabs) NavigationTabBar ntbMenu;
@@ -45,6 +47,8 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
 
         ntbMenu.setModels(models);
         ntbMenu.setViewPager(vpMainFragments, 0);
+
+
     }
 
     @Override
@@ -85,4 +89,5 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
     public void onPageScrollStateChanged(int state) {
 
     }
+
 }
