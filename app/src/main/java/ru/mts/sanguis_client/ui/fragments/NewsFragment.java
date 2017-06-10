@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.NewsPresenter;
 import ru.mts.sanguis_client.mvp.views.NewsView;
-import ru.mts.sanguis_client.ui.adapters.NewAdapter;
+import ru.mts.sanguis_client.ui.adapters.NewsAdapter;
 
 public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
@@ -29,7 +29,7 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
     @BindView(R.id.fragment_news_list) RecyclerView rvNews;
 
-    private NewAdapter adapter;
+    private NewsAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstance){
@@ -44,7 +44,7 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
 
         rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new NewAdapter();
+        adapter = new NewsAdapter();
         rvNews.setAdapter(adapter);
 
         try {

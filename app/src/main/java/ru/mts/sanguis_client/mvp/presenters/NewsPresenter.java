@@ -11,11 +11,13 @@ import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSReader;
 import org.mcsoxford.rss.RSSReaderException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import ru.mts.sanguis_client.mvp.views.NewsView;
 
-/**
- * Created by nmurzin on 10/06/2017.
- */
 
 @InjectViewState
 public class NewsPresenter extends MvpPresenter<NewsView> {
@@ -40,6 +42,6 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
     }
 
     public void populateNews() throws RSSReaderException {
-        new GetNews().execute("http://yadonor.ru/rss/news.rss?region=35");
+        new GetNews().execute("http://yadonor.ru/rss/news.rss");
     }
 }
