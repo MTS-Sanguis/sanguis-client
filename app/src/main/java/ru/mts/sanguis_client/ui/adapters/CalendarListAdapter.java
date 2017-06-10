@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.mvp.models.EventModel;
+
+import java.util.ArrayList;
 
 public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapter.ItemHolder>{
 
+    ArrayList<EventModel> events;
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -18,12 +22,18 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
 
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
-        holder.setInfo("Событие "+position, "Описание события "+position);
+        EventModel eventModel = events.get(position);
+        holder.setInfo(eventModel.getTitle(), eventModel.getSubtitle());
     }
 
     @Override
     public int getItemCount() {
-        return 12; //константа взята от балды на данный момент
+        return events==null?0:events.size();
+    }
+
+    public void setEvents(ArrayList<EventModel> events){
+        this.events = events;
+        notifyDataSetChanged();
     }
 
     class ItemHolder extends RecyclerView.ViewHolder{
