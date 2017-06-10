@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.NewsPresenter;
 import ru.mts.sanguis_client.mvp.views.NewsView;
+import ru.mts.sanguis_client.ui.adapters.NewAdapter;
 
 public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
@@ -27,6 +28,8 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
     NewsPresenter presenter;
 
     @BindView(R.id.fragment_news_list) RecyclerView rvNews;
+
+    private NewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstance){
@@ -41,23 +44,8 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
 
         rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvNews.setAdapter(new RecyclerView.Adapter() {
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
-                return new RecyclerView.ViewHolder(view) {};
-            }
-
-            @Override
-            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-            }
-
-            @Override
-            public int getItemCount() {
-                return 24; //очоердное число от балды
-            }
-        });
+        adapter = new NewAdapter();
+        rvNews.setAdapter(adapter);
 
         try {
             presenter.populateNews();
@@ -68,8 +56,7 @@ public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
     @Override
     public void setNews(List<RSSItem> news) {
-        for (RSSItem item: news) {
-            
-        }
+        if(adapter != null)
+            adapter.setNews(news);
     }
 }
