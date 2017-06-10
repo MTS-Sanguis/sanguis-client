@@ -44,4 +44,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:11.0.0'
     compile 'com.github.ahorn:android-rss:v1.0-rc1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.sundeepk:compact-calendar-view:2.0.2.1'
 }
