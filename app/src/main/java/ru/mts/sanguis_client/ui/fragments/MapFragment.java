@@ -2,6 +2,7 @@ package ru.mts.sanguis_client.ui.fragments;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -29,10 +31,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
 
 import butterknife.ButterKnife;
+import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
 import ru.mts.sanguis_client.mvp.views.MapView;
+import ru.mts.sanguis_client.mvp.views.ProfileView;
 
 
 public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView,
@@ -53,6 +58,8 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     LocationRequest mLocationRequest;
     Location location;
 
+    View mView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstance) {
@@ -65,6 +72,8 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     }
 
     public void onViewCreated(View view, Bundle savedInstance) {
+        mView = view;
+
         super.onViewCreated(view, savedInstance);
         ButterKnife.bind(this, view);
 
@@ -102,8 +111,17 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
             mGoogleMap.setMyLocationEnabled(true);
         }
 
-        //здесь карта впервые появляется.
 
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                String title = marker.getTitle();
+                LayoutInflater.from(getContext()).inflate(R.layout.fragment_blood_station, , false);
+
+            }
+        });
+
+        //здесь карта впервые появляется.
         presenter.mapLoaded(mGoogleMap);
     }
 

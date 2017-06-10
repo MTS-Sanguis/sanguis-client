@@ -1,10 +1,14 @@
 package ru.mts.sanguis_client.ui.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 
@@ -48,7 +52,11 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         ntbMenu.setModels(models);
         ntbMenu.setViewPager(vpMainFragments, 0);
 
-
+        findViewById(R.id.auth_button).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg) {
+                startActivity(new Intent(MainActivity.this, AuthActivity.class));
+            }
+        });
     }
 
     @Override
@@ -67,6 +75,11 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
         switch (position){
             case 0:
                 title = "Профиль";
+
+                String mtsAuthUrl = "https://login.mts.ru/amserver/oauth2/auth?client_id=test@b2b.mts.ru&scope=openid%20profile%20mobile&redirect_uri=http s%3A%2F%2Fapp.domain.ru%2Foauth2%2Fcallback.aspx&response_type=code&display=touch&state=1";
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mtsAuthUrl));
+                startActivity(browserIntent);
+
                 break;
             case 1:
                 title = "Карта";

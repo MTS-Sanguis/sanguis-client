@@ -4,4 +4,8 @@
     <string name="debug_name">Иванов Иван Иванович</string>
     <string name="debug_info">[Какая-либо дополнительная важная информация]</string>
     <string name="debug_foto">[ЗДЕСЬ ДОЛЖНА БЫТЬ ФОТОГРАФИЯ]</string>
+    <string name="title_activity_auth">AuthActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

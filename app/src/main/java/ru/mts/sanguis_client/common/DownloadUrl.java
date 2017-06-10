@@ -1,5 +1,6 @@
 package ru.mts.sanguis_client.common;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 /**
  * Created by nmurzin on 10/06/2017.
@@ -15,7 +17,7 @@ import java.net.URL;
 
 public class DownloadUrl {
 
-    public String readUrl(String strUrl) throws IOException {
+    public HashMap<String, String> readUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
         HttpURLConnection urlConnection = null;
@@ -50,6 +52,12 @@ public class DownloadUrl {
             iStream.close();
             urlConnection.disconnect();
         }
-        return data;
+
+        HashMap<String, String> result = new HashMap<>();
+        Uri uri = Uri.parse(urlConnection.getURL().toString());
+
+        result.put("code", uri.getQueryParameter("code"));
+        result.put("data", data);
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 package ru.mts.sanguis_client.mvp.presenters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -23,6 +24,8 @@ public class MapPresenter extends MvpPresenter<MapView> {
 
     private int PROXIMITY_RADIUS = 10000;
 
+    Context mContext;
+
     GoogleMap mGoogleMap;
     Marker marker;
 
@@ -32,6 +35,8 @@ public class MapPresenter extends MvpPresenter<MapView> {
     public String bestAvailableProvider;
 
     public MapPresenter(Context context) {
+        mContext = context;
+
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -55,6 +60,7 @@ public class MapPresenter extends MvpPresenter<MapView> {
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+
     }
 
     public void findNearestBloodStation(Location location) {
