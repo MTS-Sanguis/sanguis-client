@@ -2,12 +2,10 @@ package ru.mts.sanguis_client.ui.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,13 +18,16 @@ import ru.mts.sanguis_client.mvp.presenters.ProfilePresenter;
 import ru.mts.sanguis_client.mvp.views.ProfileView;
 import ru.mts.sanguis_client.ui.adapters.InfoListAdapter;
 
-import java.util.HashMap;
-
-public class ProfileFragment extends MvpAppCompatFragment implements ProfileView {
+public class ProfileFragment extends MvpAppCompatFragment implements ProfileView, View.OnClickListener {
 
     @BindView(R.id.fragment_profile_name) TextView tvUserName;
     @BindView(R.id.fragment_profile_photo) CircleImageView photo;
     @BindView(R.id.fragment_profile_description) TextView tvDescription;
+
+    @BindView(R.id.fragment_profile_calendar) RelativeLayout rlCalrndar;
+    @BindView(R.id.fragment_profile_faq) RelativeLayout rlFaq;
+    @BindView(R.id.fragment_profile_bonuce) RelativeLayout rlBonuce;
+    @BindView(R.id.fragment_profile_charity) RelativeLayout rlCharity;
 
     @InjectPresenter(type = PresenterType.GLOBAL, tag = "ProfilePresenter")
     ProfilePresenter presenter;
@@ -43,6 +44,10 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     public void onViewCreated(View view, Bundle savedInstance){
         super.onViewCreated(view, savedInstance);
         ButterKnife.bind(this, view);
+        rlCalrndar.setOnClickListener(this);
+        rlFaq.setOnClickListener(this);
+        rlBonuce.setOnClickListener(this);
+        rlCharity.setOnClickListener(this);
     }
 
 
@@ -60,5 +65,27 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     @Override
     public void setDescription(String description) {
         tvDescription.setText(description);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id){
+            case R.id.fragment_profile_calendar:
+
+                break;
+            case R.id.fragment_profile_faq:
+
+                break;
+            case R.id.fragment_profile_bonuce:
+
+                break;
+            case R.id.fragment_profile_charity:
+
+                break;
+            default:
+                break;
+        }
     }
 }
