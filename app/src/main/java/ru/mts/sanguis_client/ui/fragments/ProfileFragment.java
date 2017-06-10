@@ -18,6 +18,7 @@ import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.ProfilePresenter;
 import ru.mts.sanguis_client.mvp.views.ProfileView;
 import ru.mts.sanguis_client.ui.activities.BonucesActivity;
+import ru.mts.sanguis_client.ui.activities.FaqActivity;
 import ru.mts.sanguis_client.ui.adapters.InfoListAdapter;
 
 public class ProfileFragment extends MvpAppCompatFragment implements ProfileView, View.OnClickListener {
@@ -78,11 +79,10 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
 
                 break;
             case R.id.fragment_profile_faq:
-
+                startActivity(new Intent(getContext(), FaqActivity.class));
                 break;
             case R.id.fragment_profile_bonuce:
-                Intent intent = new Intent(getContext(), BonucesActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(getContext(), BonucesActivity.class));
                 break;
             case R.id.fragment_profile_charity:
 
