@@ -51,12 +51,6 @@ public class MainActivity extends MvpAppCompatActivity implements ViewPager.OnPa
 
         ntbMenu.setModels(models);
         ntbMenu.setViewPager(vpMainFragments, 0);
-
-        findViewById(R.id.auth_button).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg) {
-                startActivity(new Intent(MainActivity.this, AuthActivity.class));
-            }
-        });
     }
 
     @Override
