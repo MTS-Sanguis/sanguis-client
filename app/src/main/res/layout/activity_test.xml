@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:orientation="vertical"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			android:padding="40dp"
+			android:background="@android:color/white">
+	<TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+		android:textAlignment="center"
+			  android:text="Вопрос?"
+			  android:textColor="@android:color/black"
+			  android:textSize="28sp"
+			  android:id="@+id/activity_test_question"
+	/>
+	<LinearLayout
+		android:layout_marginTop="40dp"
+		android:layout_width="match_parent"
+		android:layout_height="64dp"
+		android:orientation="horizontal"
+	>
+		<Button
+			android:id="@+id/activity_test_yes"
+			android:layout_margin="1dp"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight=".50"
+			android:text="Да"
+			android:textColor="@android:color/white"
+			android:background="@color/colorPrimary"
+		/>
+		<Button
+			android:id="@+id/activity_test_no"
+			android:layout_margin="1dp"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight=".50"
+			android:text="Нет"
+			android:textColor="@android:color/white"
+			android:background="@color/colorPrimary"
+		/>
+	</LinearLayout>
+</LinearLayout>

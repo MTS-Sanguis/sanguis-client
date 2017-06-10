@@ -33,6 +33,8 @@
         <activity android:name=".ui.activities.StationListActivity" android:theme="@style/AppTheme"/>
         <activity android:name=".ui.activities.BonucesActivity" android:theme="@style/AppTheme"/>
         <activity android:name=".ui.activities.FaqActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".ui.activities.DemosActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".ui.activities.TestActivity" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
