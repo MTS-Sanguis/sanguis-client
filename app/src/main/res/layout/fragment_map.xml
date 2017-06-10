@@ -1,45 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:gravity="center">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/backgroundMain"
+              android:orientation="vertical">
+    
+    <RelativeLayout 
+        android:layout_width="match_parent" 
+        android:layout_height="0dp"
+        android:layout_weight=".15"
+        android:gravity="center"
+        android:padding="20dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@android:color/white">
+            <EditText
+                android:id="@+id/fragment_map_search_input"
+                android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight=".80"/>
+            <RelativeLayout android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight=".20"
+                android:background="@color/backgroundDark">
+                <RelativeLayout
+                        android:id="@+id/fragment_map_search"
+                        android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:background="?android:attr/selectableItemBackground">
+                    <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
+                               android:src="@drawable/ic_search"/>
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".75">
+        <FrameLayout
+                android:id="@+id/fragment_map_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+        </FrameLayout>
 
-
-    <FrameLayout
-            android:id="@+id/fragment_map_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-    </FrameLayout>
-
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fragment_map_additional_info"
-        android:visibility="invisible"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="6dp"
-        android:background="@android:color/white"
-        android:padding="5dp"
-        android:orientation="vertical"
-    >
-        <TextView
-            android:id="@+id/fragment_map_main_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[DEBUG]"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-        />
-        <TextView
-            android:id="@+id/fragment_map_additional_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[DEBUG]"
-            android:textSize="16sp"
-        />
-    </LinearLayout>
-
-</RelativeLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/fragment_map_additional_info"
+                      android:visibility="invisible"
+                      android:layout_alignParentBottom="true"
+                      android:layout_margin="6dp"
+                      android:background="@android:color/white"
+                      android:padding="5dp"
+                      android:orientation="vertical"
+        >
+            <TextView
+                    android:id="@+id/fragment_map_main_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[DEBUG]"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+            />
+            <TextView
+                    android:id="@+id/fragment_map_additional_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[DEBUG]"
+                    android:textSize="16sp"
+            />
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".10"
+        android:background="@android:color/white">
+        <RelativeLayout
+            android:id="@+id/fragment_map_to_list"
+            android:layout_width="match_parent" 
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:clickable="true">
+            <TextView 
+                    android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content"
+                    android:text="К списку центров"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

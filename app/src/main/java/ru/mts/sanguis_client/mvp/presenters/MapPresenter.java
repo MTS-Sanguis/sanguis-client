@@ -43,7 +43,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
     Context mContext;
     private GoogleApiClient mGoogleApiClient;
 
-    GoogleMap mGoogleMap;
+    GoogleMap mGoogleMap;//FIXME потенциальная утечка памяти
     Marker marker;
 
     private LocationManager locationManager;
@@ -224,6 +224,10 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
             // other 'case' lines to check for other permissions this app might request.
             // You can add here other case statements according to your requirement.
         }
+    }
+
+    public void stationSearch(CharSequence input){
+        Log.d(getClass().getSimpleName(), "SEARCH!");
     }
 
 }

@@ -15,10 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -49,8 +46,7 @@ import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
 import ru.mts.sanguis_client.mvp.views.MapView;
 
 
-public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView
-{
+public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView, View.OnClickListener{
 
     @InjectPresenter
     MapPresenter presenter;
@@ -64,7 +60,9 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     @BindView(R.id.fragment_map_additional_info) LinearLayout llClincInfo;
     @BindView(R.id.fragment_map_main_text) TextView tvTitle;
     @BindView(R.id.fragment_map_additional_text) TextView tvAdditionalText;
-
+    @BindView(R.id.fragment_map_search) RelativeLayout rvSearchBtn;
+    @BindView(R.id.fragment_map_to_list) RelativeLayout rvListBtn;
+    @BindView(R.id.fragment_map_search_input) EditText searchInput;
 
     private GoogleMap mGoogleMap;
 
@@ -79,6 +77,8 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
     public void onViewCreated(View view, Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
         ButterKnife.bind(this, view);
+        rvSearchBtn.setOnClickListener(this);
+        rvListBtn.setOnClickListener(this);
         SupportMapFragment map = SupportMapFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(flMap.getId(), map).commit();
         map.getMapAsync(this);
@@ -228,5 +228,18 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         tvTitle.setText("Какой-то текст!");
         tvTitle.setText("Какой-то текст!");
         llClincInfo.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id){
+            case R.id.fragment_map_search:
+                presenter.stationSearch(searchInput.getText());
+                break;
+            default:
+                break;
+        }
     }
 }
