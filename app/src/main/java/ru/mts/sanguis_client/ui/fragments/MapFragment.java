@@ -2,7 +2,6 @@ package ru.mts.sanguis_client.ui.fragments;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -17,9 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.PopupWindow;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -37,7 +38,6 @@ import butterknife.ButterKnife;
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
 import ru.mts.sanguis_client.mvp.views.MapView;
-import ru.mts.sanguis_client.mvp.views.ProfileView;
 
 
 public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallback, MapView,
@@ -52,35 +52,27 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         return new MapPresenter(this.getContext());
     }
 
-    private FrameLayout sFL;
-    GoogleApiClient mGoogleApiClient;
-    GoogleMap mGoogleMap;
-    LocationRequest mLocationRequest;
-    Location location;
+    @BindView(R.id.fragment_map_map) FrameLayout flMap;
+    @BindView(R.id.fragment_map_additional_info) LinearLayout llClincInfo;
+    @BindView(R.id.fragment_map_main_text) TextView tvTitle;
+    @BindView(R.id.fragment_map_additional_text) TextView tvAdditionalText;
 
-    View mView;
+    private GoogleApiClient mGoogleApiClient;
+    private GoogleMap mGoogleMap;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstance) {
-
         super.onCreateView(inflater, parent, savedInstance);
-
-        sFL = new FrameLayout(getActivity());
-        return sFL;
+        return inflater.inflate(R.layout.fragment_map, parent, false);
 
     }
 
     public void onViewCreated(View view, Bundle savedInstance) {
-        mView = view;
-
         super.onViewCreated(view, savedInstance);
         ButterKnife.bind(this, view);
-
         SupportMapFragment map = SupportMapFragment.newInstance();
-        sFL.setId(0x148813);
-        getChildFragmentManager().beginTransaction().replace(sFL.getId(), map).commit();
-
+        getChildFragmentManager().beginTransaction().replace(flMap.getId(), map).commit();
         map.getMapAsync(this);
     }
 
@@ -115,9 +107,10 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                String title = marker.getTitle();
-                LayoutInflater.from(getContext()).inflate(R.layout.fragment_blood_station, , false);
-
+                Log.d(getClass().getSimpleName(), "Click!");
+                tvTitle.setText("Какой-то текст!");
+                tvTitle.setText("Какой-то текст!");
+                llClincInfo.setVisibility(View.VISIBLE);
             }
         });
 
@@ -212,16 +205,12 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mLocationRequest = new LocationRequest();
+        LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        if (ContextCompat.checkSelfPermission(getContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
         Log.d("location", "Request update");
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-//        }
     }
 
     @Override
@@ -236,7 +225,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
 
     @Override
     public void onLocationChanged(Location newLocation) {
-        location = newLocation;
+        Location location = newLocation;
 
         presenter.findNearestBloodStation(location);
     }
