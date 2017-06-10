@@ -12,8 +12,6 @@ public interface MapView extends MvpView {
     @StateStrategyType(SkipStrategy.class)
     void checkLocationPermission();
 
-<<<<<<< HEAD
-=======
     @StateStrategyType(SkipStrategy.class)
     void setTitle(String title);
 
@@ -23,5 +21,4 @@ public interface MapView extends MvpView {
     @StateStrategyType(SkipStrategy.class)
     void showClinicInfo();
 
->>>>>>> map
 }

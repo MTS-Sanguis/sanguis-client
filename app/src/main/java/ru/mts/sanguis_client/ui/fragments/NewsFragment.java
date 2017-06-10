@@ -11,11 +11,16 @@ import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import org.mcsoxford.rss.RSSItem;
+
+import java.util.List;
+
 import ru.mts.sanguis_client.R;
 import ru.mts.sanguis_client.mvp.presenters.MapPresenter;
 import ru.mts.sanguis_client.mvp.presenters.NewsPresenter;
+import ru.mts.sanguis_client.mvp.views.NewsView;
 
-public class NewsFragment extends MvpAppCompatFragment {
+public class NewsFragment extends MvpAppCompatFragment implements NewsView {
 
     @InjectPresenter
     NewsPresenter presenter;
@@ -56,4 +61,8 @@ public class NewsFragment extends MvpAppCompatFragment {
         });
     }
 
+    @Override
+    public void setNews(List<RSSItem> news) {
+
+    }
 }
