@@ -13,10 +13,10 @@
             android:layout_height="wrap_content"
             android:layout_weight=".30"
             android:gravity="center">
-        <TextView
+        <ImageView
+                android:id="@+id/item_news_thumb"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/debug_foto"/>
+                android:layout_height="wrap_content" />
     </RelativeLayout>
     <LinearLayout
             android:layout_width="0dp"
