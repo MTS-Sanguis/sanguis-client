@@ -11,11 +11,11 @@
 		android:padding="10dp">
 		<LinearLayout
 				android:orientation="horizontal"
-				android:layout_width="match_parent" android:layout_height="58dp">
+				android:layout_width="match_parent" android:layout_height="64dp">
 			<ImageView
-					android:layout_width="58dp"
-					android:layout_height="58dp"
-					android:background="@color/colorPrimary"
+					android:layout_width="64dp"
+					android:layout_height="64dp"
+					android:src="@drawable/ic_donations"
 			/>
 			<TextView
 					android:layout_width="wrap_content"
@@ -66,15 +66,15 @@
 		</LinearLayout>
 		<LinearLayout
 				android:orientation="horizontal"
-				android:layout_width="match_parent" android:layout_height="58dp">
+				android:layout_width="match_parent" android:layout_height="64dp">
 			<ImageView
-					android:layout_width="58dp"
-					android:layout_height="58dp"
-					android:background="@color/colorPrimary"
+					android:layout_width="64dp"
+					android:layout_height="64dp"
+					android:src="@drawable/ic_process"
 			/>
 			<TextView
 					android:layout_width="wrap_content"
-					android:layout_height="58dp"
+					android:layout_height="64dp"
 					android:layout_marginLeft="5dp"
 					android:text="Процесс донации"
 					android:textColor="@android:color/black"
@@ -166,15 +166,15 @@
 		</LinearLayout>
 		<LinearLayout
 				android:orientation="horizontal"
-				android:layout_width="match_parent" android:layout_height="58dp">
+				android:layout_width="match_parent" android:layout_height="64dp">
 			<ImageView
-					android:layout_width="58dp"
-					android:layout_height="58dp"
-					android:background="@color/colorPrimary"
+					android:layout_width="64dp"
+					android:layout_height="64dp"
+					android:src="@drawable/ic_info"
 			/>
 			<TextView
 					android:layout_width="wrap_content"
-					android:layout_height="58dp"
+					android:layout_height="64dp"
 					android:layout_marginLeft="5dp"
 					android:text="Остались вопросы?"
 					android:textColor="@android:color/black"

@@ -298,4 +298,6 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
         findNearest(location, input.toString());
     }
 
+
+
 }

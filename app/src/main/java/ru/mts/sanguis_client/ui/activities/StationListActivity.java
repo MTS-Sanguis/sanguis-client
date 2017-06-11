@@ -2,16 +2,24 @@ package ru.mts.sanguis_client.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 
 import java.util.HashMap;
 import java.util.List;
 
 import ru.mts.sanguis_client.R;
+import ru.mts.sanguis_client.ui.adapters.CalendarListAdapter;
 
 public class StationListActivity extends MvpAppCompatActivity{
+
+    @BindView(R.id.activity_station_list) RecyclerView rvStations;
+    private CalendarListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -26,6 +34,11 @@ public class StationListActivity extends MvpAppCompatActivity{
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
         }
+
+        ButterKnife.bind(this);
+        rvStations.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CalendarListAdapter();
+        rvStations.setAdapter(adapter);
 
         Bundle bundle = getIntent().getExtras();
         List<HashMap<String, String>> nearbyPlaces = (List<HashMap<String, String>>) bundle.getSerializable("nearbyPlacesData");
