@@ -68,6 +68,8 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
         SupportMapFragment map = SupportMapFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(flMap.getId(), map).commit();
         map.getMapAsync(this);
+
+        llClincInfo.setOnClickListener(this);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
 
     public void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED)  {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
@@ -169,6 +171,8 @@ public class MapFragment extends MvpAppCompatFragment implements OnMapReadyCallb
                 if(activity instanceof MainActivity)
                     ((MainActivity) activity).setHomePage();
                 break;
+            case R.id.fragment_map_additional_info:
+                v.setVisibility(View.GONE);
             default:
                 break;
         }
