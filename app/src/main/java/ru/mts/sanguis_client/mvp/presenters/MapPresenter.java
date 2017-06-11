@@ -51,7 +51,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
     private GoogleApiClient mGoogleApiClient;
 
     GoogleMap mGoogleMap;//FIXME потенциальная утечка памяти
-    Marker marker;
+    Marker currentMarker;
     Location location;
 
     private LocationManager locationManager;
@@ -107,6 +107,9 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
 
             @Override
             public void onInfoWindowClick(final Marker marker) {
+
+                if (marker.getId().equals(currentMarker.getId()))
+                    return;
 
                 Comparator<HashMap<String, String>> PlaceComparator
                         = new Comparator<HashMap<String, String>>() {
@@ -224,7 +227,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //place marker where user just clicked
         Log.i("maps", "Placing current location marker...");
-        marker = mGoogleMap.addMarker(new MarkerOptions()
+        currentMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Вы здесь")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));

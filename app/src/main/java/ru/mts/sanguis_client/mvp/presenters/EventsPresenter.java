@@ -3,10 +3,15 @@ package ru.mts.sanguis_client.mvp.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.github.sundeepk.compactcalendarview.domain.Event;
+
 import ru.mts.sanguis_client.mvp.models.EventModel;
 import ru.mts.sanguis_client.mvp.views.EventsView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @InjectViewState
 public class EventsPresenter extends MvpPresenter<EventsView> {

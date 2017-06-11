@@ -1,6 +1,8 @@
 package ru.mts.sanguis_client.common;
 
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +59,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             markerOptions.title(placeName);
+            markerOptions.snippet("More info");
             mMap.addMarker(markerOptions);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             //move map camera
