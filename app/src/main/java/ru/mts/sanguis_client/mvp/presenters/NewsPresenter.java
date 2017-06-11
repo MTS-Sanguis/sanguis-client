@@ -46,8 +46,10 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
 
     private void loadNewsFeed(){
         news = new ArrayList<>();
-        for(int i=0;i<15;i++){
-            news.add(new NewsModel("Новость "+i, "Длинное захватывающее описание, которое привлекает внимание "+ i));
-        }
+        news.add(new NewsModel("11.06.2017", "15-й фестиваль татуировки в СПб"));
+        news.add(new NewsModel("14.06.2017", "Всемирный день донора\nДонорская акция: \"Глиссада жизни\""));
+        news.add(new NewsModel("15.06.2017", "1667 г. первое успешное переливание крови"));
+        news.add(new NewsModel("24.06.2017", "День донора: рабочая суббота в ОПК ГКДБ Св. Владимира"));
+        news.add(new NewsModel("28.06.2017", "Дни донора в общежитиях ФГБОУ ВО РНИМУ им. Н.И.Пирогова"));
     }
 }

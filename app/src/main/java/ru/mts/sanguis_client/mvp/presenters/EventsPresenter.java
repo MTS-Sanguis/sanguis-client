@@ -21,7 +21,11 @@ public class EventsPresenter extends MvpPresenter<EventsView> {
     private void loadEvents(){
         events = new ArrayList<>();
 
-        for(int i = 0; i<10; i++){
+        events.add(new EventModel("06.06.2017", "Маша Семенова срочно нуждается в перелевании крови\n" +
+                " 3-я положительная"));
+        events.add(new EventModel("09.06.2017", "Москвоскому Хоспису для онкобольных требуется кровь 1-й и 2-й группы"));
+        events.add(new EventModel("10.06.2017", "Городская поликлиника №32 нуждается в крови 4-й группы с отрицательным резусфактором"));
+        for(int i = 0; i<5; i++){
             events.add(new EventModel("Событие" + i, "Описание события " + i));
         }
     }
