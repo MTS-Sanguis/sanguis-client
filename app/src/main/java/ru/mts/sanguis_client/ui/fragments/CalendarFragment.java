@@ -44,21 +44,26 @@ public class CalendarFragment extends MvpAppCompatFragment implements EventsView
         return inflater.inflate(R.layout.fragment_calendar, null, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstance){
-        ButterKnife.bind(this,view);
-
+    private void addEvent(String dateString, Integer color, String title) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
         try {
-            date = format.parse("16/07/2017");
+            date = format.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         if(date != null){
-            calendarView.addEvent(new Event(Color.RED, date.getTime(), "Сдавать кровь"));
+            calendarView.addEvent(new Event(color, date.getTime(), title), true);
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstance){
+        ButterKnife.bind(this,view);
+
+        addEvent("13/06/2017", Color.RED, "Сдавать кровь");
+        addEvent("14/06/2017", Color.BLUE, "Всемирный день донора");
 
         adapter = new CalendarListAdapter();
         rvEvents.setLayoutManager(new LinearLayoutManager(getContext()));

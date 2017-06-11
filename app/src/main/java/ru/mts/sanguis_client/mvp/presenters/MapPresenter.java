@@ -148,9 +148,9 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
                                     Log.i("nearest", "Place found: " + nearestPlace.getId());
 
                                     getViewState().setAdditionalTitle(
-                                            nearestPlace.getPhoneNumber() + "\n" +
-                                            nearestPlace.getAddress() + "\n" +
-                                            nearestPlace.getWebsiteUri()
+                                            (nearestPlace.getPhoneNumber()!=null?nearestPlace.getPhoneNumber() + "\n":"") +
+                                            (nearestPlace.getAddress()!=null?nearestPlace.getAddress() + "\n":"") +
+                                            (nearestPlace.getWebsiteUri()!=null?nearestPlace.getWebsiteUri():"")
                                     );
 
 
@@ -217,7 +217,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
     }
 
     public void findNearestBloodStation(Location location) {
-        findNearest(location, "blood,transfusion");
+        findNearest(location, "станция,переливания,крови,blood,transfusion");
     }
 
     public void findNearest(Location location, String input) {
@@ -226,7 +226,7 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
         Log.i("maps", "Placing current location marker...");
         marker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title("Текущее положение")
+                .title("Вы здесь")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
         Log.i("maps", "Zooming in...");
@@ -245,12 +245,11 @@ public class MapPresenter extends MvpPresenter<MapView> implements GoogleApiClie
     }
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
-        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/textsearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
-//        googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
+        //googlePlacesUrl.append("&radius=" + 50000);
         googlePlacesUrl.append("&rankby=distance");
-        googlePlacesUrl.append("&keyword=" + nearbyPlace);
-        googlePlacesUrl.append("&sensor=true");
+        googlePlacesUrl.append("&query=" + nearbyPlace);
         googlePlacesUrl.append("&language=ru");
         googlePlacesUrl.append("&key=" + "AIzaSyCxSBD3QAbaylJLHZd57N-98gVQArjMfxY");
         Log.d("getUrl", googlePlacesUrl.toString());
